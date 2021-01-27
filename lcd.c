@@ -17,9 +17,9 @@
    /* writes a byte to the LCD in 4 bit mode */
    void lcdWrite(unsigned char b)
    {
-	    GPIOE -> ODR = (GPIOE -> ODR & 0xFFF) | (b & 0xF0) << 8;            // sends the Most-Significant Nibble
+	GPIOE -> ODR = (GPIOE -> ODR & 0xFFF) | (b & 0xF0) << 8;            // sends the Most-Significant Nibble
         LCD_STROBE;
-        GPIOE -> ODR = (GPIOE -> ODR & 0xFFF) | (b & 0x0F) << 12;         // sends the Least-Significant Nibble
+        GPIOE -> ODR = (GPIOE -> ODR & 0xFFF) | (b & 0x0F) << 12;           // sends the Least-Significant Nibble
         LCD_STROBE;
         HAL_Delay(1);
    }
@@ -28,10 +28,10 @@
     void lcdInit(void)
     {
     	HAL_GPIO_WritePin(LCD_EN_GPIO_Port, LCD_EN_Pin, GPIO_PIN_RESET);    // LCD enable
-        HAL_GPIO_WritePin(LCD_RS_GPIO_Port, LCD_RS_Pin, GPIO_PIN_RESET);  // instruction mode (register select)
-        HAL_Delay(50);                            			                  // power on delay (must be larger than 40 ms)
+        HAL_GPIO_WritePin(LCD_RS_GPIO_Port, LCD_RS_Pin, GPIO_PIN_RESET);    // instruction mode (register select)
+        HAL_Delay(50);                            			    // power on delay (must be larger than 40 ms)
 
-        GPIOE -> ODR = (GPIOE -> ODR & 0x0FFF) | (3 << 12);               // clears the upper nibble, then a 3 is shifted into it
+        GPIOE -> ODR = (GPIOE -> ODR & 0x0FFF) | (3 << 12);                 // clears the upper nibble, then a 3 is shifted into it
         LCD_STROBE;                                 	                    // passes information to the LCD
         HAL_Delay(5);
         LCD_STROBE;
@@ -39,22 +39,22 @@
         LCD_STROBE;
         HAL_Delay(5);
 
-        GPIOE -> ODR = (GPIOE -> ODR & 0x0FFF) | (2 << 12);                // clears the upper nibble, then a 2 is shifted into it
+        GPIOE -> ODR = (GPIOE -> ODR & 0x0FFF) | (2 << 12);                 // clears the upper nibble, then a 2 is shifted into it
         LCD_STROBE;
         HAL_Delay(5);
-        lcdWrite(0x28);                             		                   // 4 bit mode - 1/16th duty cycle, 5x8 font
-        lcdWrite(0x0F);                             		                   // display on, cursor off, blink off
-        lcdWrite(0x01);										                                 // clear display, reset cursor
+        lcdWrite(0x28);                             		            // 4 bit mode - 1/16th duty cycle, 5x8 font
+        lcdWrite(0x0F);                             		            // display on, cursor off, blink off
+        lcdWrite(0x01);				                            // clear display, reset cursor
         HAL_Delay(2);
-        lcdWrite(0x06);                             		                   // entry mode set, increment mode, shift off
-        lcdWrite(0x01);                             		                   // clear display, reset cursor
-        HAL_GPIO_WritePin(LCD_RS_GPIO_Port, LCD_RS_Pin, GPIO_PIN_SET);     // data input mode
+        lcdWrite(0x06);                             		            // entry mode set, increment mode, shift off
+        lcdWrite(0x01);                             		            // clear display, reset cursor
+        HAL_GPIO_WritePin(LCD_RS_GPIO_Port, LCD_RS_Pin, GPIO_PIN_SET);      // data input mode
     }
 
     /* clears and homes the LCD */
     void lcdClear(void)
     {
-    	HAL_GPIO_WritePin(LCD_RS_GPIO_Port, LCD_RS_Pin, GPIO_PIN_RESET);	     // instruction mode
+    	HAL_GPIO_WritePin(LCD_RS_GPIO_Port, LCD_RS_Pin, GPIO_PIN_RESET);     // instruction mode
         lcdWrite(0x01);                                                      // clears LCD
         HAL_Delay(2);
         lcdWrite(0x02);                                                      // homes LCD
@@ -62,7 +62,7 @@
       /* writes a string of characters to the LCD */
     void lcdPuts(char * s)
     {
-        HAL_GPIO_WritePin(LCD_RS_GPIO_Port, LCD_RS_Pin, GPIO_PIN_SET); 		   // data input mode
+        HAL_GPIO_WritePin(LCD_RS_GPIO_Port, LCD_RS_Pin, GPIO_PIN_SET);       // data input mode
         while(*s !=0)                                                        // while s is not zero, execute the below code
        {
         	lcdWrite(*s);
@@ -75,14 +75,14 @@
     {
 
         HAL_GPIO_WritePin(LCD_RS_GPIO_Port, LCD_RS_Pin, GPIO_PIN_SET);        // data input mode
-        lcdWrite(c);                                						              // passing lcdWrite an unsigned char
+        lcdWrite(c);                                			      // passing lcdWrite an unsigned char
     }
 
     /* go to specified position */
     void lcdGoto(unsigned char pos)
     {
         HAL_GPIO_WritePin(LCD_RS_GPIO_Port, LCD_RS_Pin, GPIO_PIN_RESET);      // instruction input
-        lcdWrite(0x80 + pos);                       					                // 80 = goto command
+        lcdWrite(0x80 + pos);                       			      // 80 = goto command
         HAL_GPIO_WritePin(LCD_RS_GPIO_Port, LCD_RS_Pin, GPIO_PIN_SET);        // data input mode
     }
 
@@ -100,7 +100,7 @@
     void lcdCmd(unsigned char c)
     {
 
-    	HAL_GPIO_WritePin(LCD_RS_GPIO_Port, LCD_RS_Pin, GPIO_PIN_RESET);       // instruction input
-        lcdWrite(c);                                					               // sends a command to LCD
+    	HAL_GPIO_WritePin(LCD_RS_GPIO_Port, LCD_RS_Pin, GPIO_PIN_RESET);           // instruction input
+        lcdWrite(c);                                			           // sends a command to LCD
 
     }
