@@ -7,17 +7,17 @@
   * @Project        : lcd
   *
   * Hardware Setup  : PortE bit 8 connected to the RS (register select) input
-  * 				          PortE bit 9 connected to the R/!W (read/write) pin
-  * 				          PortE bit 10 connected to the EN (enable) pin
-  * 				          PortE bit 11 hard-wired to board's 5V supply to power the LCD back-light
-  * 				          PortE bits 12-15 connected to LCD data bits 4-7
+  *                   PortE bit 9 connected to the R/!W (read/write) pin
+  * 		      PortE bit 10 connected to the EN (enable) pin
+  * 		      PortE bit 11 hard-wired to board's 5V supply to power the LCD back-light
+  * 		      PortE bits 12-15 connected to LCD data bits 4-7
   *
   * Purpose         : The lcd.c and lcd.h files were used from the ECET165 PIC class (written for a Microchip PIC processor)
-  * 				          and ported to the ST Arm processor.
+  * 		      and ported to the ST Arm processor.
   *
-  * 				          The lcd displays "ECET 260 Lab 7", and the author's name.
-  * 				          Following a 5 second delay, an alien character scrolls continuously left and right
-  * 				          across the second-line of the display.
+  * 		      The lcd displays "ECET 260 Lab 7", and the author's name.
+  * 		      Following a 5 second delay, an alien character scrolls continuously left and right
+  * 		      across the second-line of the display.
 
   ******************************************************************************
   */
@@ -116,20 +116,20 @@ int main(void)
   MX_SPI1_Init();
   MX_USB_HOST_Init();
   /* USER CODE BEGIN 2 */
-  lcdBl(1);						// lcd back-light is turned on
+  lcdBl(1);				// lcd back-light is turned on
   lcdInit();
 
   lcdPuts(" ECET 260 Lab 7");
   lcdGoto(0x40); 		        // printing starts at about the center of the second-line
   lcdPuts("    Jessica     ");
-  HAL_Delay(5000);				// a delay of five seconds
+  HAL_Delay(5000);		        // a delay of five seconds
 
   lcdGoto(0x40); 		        // prints 16 spaces to clear the second-line
   lcdPuts("                ");
-  lcdGoto(0x40);				// printing resumes at the start of the second-line
+  lcdGoto(0x40);			// printing resumes at the start of the second-line
 
-  lcd_createChar(0, Alien);  	// function to create the custom-Alien character
-  lcdPutch(0); 				    // prints the Alien custom character
+  lcd_createChar(0, Alien);  	        // function to create the custom-Alien character
+  lcdPutch(0); 				// prints the Alien custom character
 
   /* USER CODE END 2 */
 
@@ -143,18 +143,18 @@ int main(void)
     /* USER CODE BEGIN 3 */
     for (int loc = 0; loc < 16; loc++)
     {
-    	lcdGoto(0x40 + loc);				// moves cursor
-    	lcdPutch(0);						// prints character
-    	lcdGoto(0x40 + (loc - 1));			// erases the last character
+    	lcdGoto(0x40 + loc);		// moves cursor
+    	lcdPutch(0);			// prints character
+    	lcdGoto(0x40 + (loc - 1));	// erases the last character
     	lcdPutch(' ');
     	HAL_Delay(50);
     }
 
     for (int loc = 16; loc > -1; loc--)
     {
-    	lcdGoto(0x40 + loc);				// moves cursor
-		lcdPutch(0);						// prints character
-    	lcdGoto(0x40 + (loc + 1));			// erases the last character
+    	lcdGoto(0x40 + loc);		// moves cursor
+		lcdPutch(0);		// prints character
+    	lcdGoto(0x40 + (loc + 1));	// erases the last character
     	lcdPutch(' ');
     	HAL_Delay(50);
     }
